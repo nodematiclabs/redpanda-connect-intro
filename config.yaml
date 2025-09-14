@@ -1,0 +1,28 @@
+# config.yaml
+http:
+  address: 0.0.0.0:4195
+
+input:
+  label: "tick_tock_generator"
+  generate:
+    mapping: |
+      root.id = uuid_v4()
+      root.message = "Hello, Redpanda Connect!"
+      root.timestamp = now()
+    interval: 1s # Generate one message per second
+
+output:
+  broker:
+    outputs:
+    - label: "to_redpanda_topic_1"
+      redpanda:
+        seed_brokers:
+        - "redpanda:29092"
+        topic: "connect-test-1"
+        max_in_flight: 1
+    - label: "to_redpanda_topic_2"
+      redpanda:
+        seed_brokers:
+        - "redpanda:29092"
+        topic: "connect-test-2"
+        max_in_flight: 1
